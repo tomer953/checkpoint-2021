@@ -48,37 +48,95 @@ let mapper = {
     'Z': [],
 }
 
-console.log(leet.length, normal.length);
-
-let letters = new Set();
-for (const c of normal) {
-    letters.add(c);
-}
-// console.log(letters);
-
-let result = [];
-for (let i = 0; i < normal.length; i++) {
-    const c1 = normal[i];
-    const c2 = leet[i];
-    
-    // ignore quotes
-    if (c1 == '"' || c1 == "'") {
-        continue;
-    }
-    // if is the same as c2:
-    if (c1 == c2 || c1.toUpperCase() == c2.toUpperCase()) {
-        continue;
-    }
-
-    // if exists in mapper:
-    let c1Upper = c1.toUpperCase();
-    if (mapper[c1Upper]) {
-        // if contains the c2 char
-        if (mapper[c1Upper].includes(c2)) {
+function testLetters() {
+    console.log('testing letters...')
+    for (let i = 0; i < normal.length; i++) {
+        const c1 = normal[i];
+        const c2 = leet[i];
+        
+        // ignore quotes
+        if (c1 == '"' || c1 == "'") {
             continue;
         }
+        // if is the same as c2:
+        if (c1 == c2 || c1.toUpperCase() == c2.toUpperCase()) {
+            continue;
+        }
+    
+        // if exists in mapper:
+        let c1Upper = c1.toUpperCase();
+        if (mapper[c1Upper]) {
+            // if contains the c2 char
+            if (mapper[c1Upper].includes(c2)) {
+                continue;
+            }
+        }
+        console.log('wrong mapping at index',i, c1,c2);
     }
-    console.log(c1,c2);
-    result.push(c1);
 }
-console.log(result);
+
+function testWords() {
+    // 750 words total
+    let w1 = leet.split(' ');
+    let w2 = normal.split(' ');
+
+    let nonMappedWords = [];
+    for (let i = 0; i < w1.length; i++) {
+        let leetWord = w1[i];
+        let normalWord = w2[i];
+
+        if (leetWord.toLowerCase() == normalWord.toLowerCase()) {
+            console.log(i, leetWord,normalWord);
+            nonMappedWords.push(leetWord);
+        }
+        
+    }
+}
+
+function printCompletlyDifferentWords() {
+    // 750 words total
+    let w1 = leet.split(' ');
+    let w2 = normal.split(' ');
+
+    let result = [];
+    for (let i = 0; i < w1.length; i++) {
+        let leetWord = w1[i];
+        let normalWord = w2[i];
+
+        let flag = false
+        for (let j = 0; j < leetWord.length; j++) {
+            if (leetWord[j] == normalWord[j]) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            let pair = [leetWord, normalWord];
+            console.log(pair)
+            result.push(pair);
+        }
+        
+    }
+}
+
+function printByCase() {
+
+    let AZ = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    let az = AZ.map(x => x.toLowerCase());
+    let uppers = [];
+    let lowers = [];
+    for (const c of leet) {
+        if (AZ.includes(c)) {
+            uppers.push(c);
+        } else if (az.includes(c)) {
+            lowers.push(c);
+        }
+    }
+    console.log(uppers.join(''));
+    console.log(lowers.join(''));
+}
+
+// testLetters();
+// testWords();
+// printByCase();
+printCompletlyDifferentWords();
