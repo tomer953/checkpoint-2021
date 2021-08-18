@@ -48,12 +48,29 @@ let mapper = {
     'Z': [],
 }
 
+function to1337(str) {
+    let result = '';
+    for (const c of str) {
+        let upperChar = c.toUpperCase();
+        if (mapper[upperChar] && mapper[upperChar].length) {
+            result += randomItem(mapper[upperChar]);
+        } else {
+            result += randomItem([c, upperChar])
+        }
+    }
+    // console.log(result);
+    return result;
+}
+function randomItem(items) {
+    return items[Math.floor(Math.random() * items.length)];
+}
+
 function testLetters() {
     console.log('testing letters...')
     for (let i = 0; i < normal.length; i++) {
         const c1 = normal[i];
         const c2 = leet[i];
-        
+
         // ignore quotes
         if (c1 == '"' || c1 == "'") {
             continue;
@@ -62,7 +79,7 @@ function testLetters() {
         if (c1 == c2 || c1.toUpperCase() == c2.toUpperCase()) {
             continue;
         }
-    
+
         // if exists in mapper:
         let c1Upper = c1.toUpperCase();
         if (mapper[c1Upper]) {
@@ -71,7 +88,7 @@ function testLetters() {
                 continue;
             }
         }
-        console.log('wrong mapping at index',i, c1,c2);
+        console.log('wrong mapping at index', i, c1, c2);
     }
 }
 
@@ -86,10 +103,10 @@ function testWords() {
         let normalWord = w2[i];
 
         if (leetWord.toLowerCase() == normalWord.toLowerCase()) {
-            console.log(i, leetWord,normalWord);
+            console.log(i, leetWord, normalWord);
             nonMappedWords.push(leetWord);
         }
-        
+
     }
 }
 
@@ -115,13 +132,13 @@ function printCompletlyDifferentWords() {
             console.log(pair)
             result.push(pair);
         }
-        
+
     }
 }
 
 function printByCase() {
 
-    let AZ = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    let AZ = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     let az = AZ.map(x => x.toLowerCase());
     let uppers = [];
     let lowers = [];
@@ -139,4 +156,14 @@ function printByCase() {
 // testLetters();
 // testWords();
 // printByCase();
-printCompletlyDifferentWords();
+// printCompletlyDifferentWords();
+let allResults = new Set();
+for (let i = 0; i < 1000000; i++) {
+    allResults.add(to1337("{hey_that_is_the_great_puzzle}"));
+}
+// console.log(allResults)
+console.log(allResults.size)
+let results = Array.from(allResults);
+console.log(results.length)
+const fs = require('fs');
+fs.writeFileSync('keys.txt', results.join('\n'), "utf8");
