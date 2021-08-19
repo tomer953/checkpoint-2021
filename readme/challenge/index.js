@@ -1,3 +1,5 @@
+const fs = require("fs");
+const product = require("cartesian-product");
 
 let leet = `41ic3 3@S b391nn1ng T* 93t V3Ry TlrE6 *7 51ttin9 8Y HER 515TER 0n TH3 b@nK, 42D *7 hAVln9 20thing T* D0: *2©3 0R T3lc3 Sh3 H@D p3Ep36 12T* tHE 800k H3r SiST3r wAS r34D1ng, b[T 1t H4D n* 91CT[rE5 0R C02v3R5@t10n5 l2 lT, 'An6 3H4t 1S thE uS3 *F @ 8*0k,' Th0ugHt 41lcE 'wiTH*[t 9iCt[R35 0r ©0nvERS@t1*n?'
 5* Sh3 3A5 ©*2SlDEr129 1n HEr 032 8126 (A5 wELL @5 SHE ©0[16, 70r tH3 h*t 64Y 8A63 h3r F33L VERY 513Epy @26 ST[pl6), wHETh3R tH3 9LE@SuR3 *F 84king 4 64lSy-Ch@in 30u1D b3 30rTh th3 TR*u813 *7 g3tTin9 up 42D plCKin9 thE DAlS1E5, wH3n S[DD3nLy 4 3HlT3 r4881t 3lTH 9lnk 3YE5 RAn ©1053 by hEr.
@@ -20,150 +22,55 @@ Down, down, down. Would the fall never come to an end! "I wonder how many miles 
 Presently she began again. "I wonder if I shall fall right through the earth! How funny it"ll seem to come out among the people that walk with their heads downward! The Antipathies, I think--" (she was rather glad there WAS no one listening, this time, as it didn"t sound at all the right word) "--but I shall have to ask them what the name of the country is, you know. Please, Ma"am, is this New Zealand or Australia?" (and she tried to curtsey as she spoke--fancy curtseying as you"re falling through the air! Do you think you could manage it?) "And what an ignorant little girl she"ll think me for asking! No, it"ll never do to ask: perhaps I shall see it written up somewhere."`;
 
 let mapper = {
-    'A': ['4', '@'],
-    'B': ['8'],
-    'C': ['©', '¢'],
-    'D': ['6'],
-    'E': ['3'],
-    'F': ['7'],
-    'G': ['9'],
-    'H': [],
-    'I': ['1', 'l'],
-    'J': ['7'],
-    'K': [],
-    'L': ['1'],
-    'M': ['8'],
-    'N': ['2'],
-    'O': ['0', '*'],
-    'P': ['9'],
-    'Q': [],
-    'R': [],
-    'S': ['5'],
-    'T': [],
-    'U': ['['],
-    'V': [],
-    'W': ['3'],
-    'X': ['*'],
-    'Y': [],
-    'Z': [],
-}
+  A: ["A", "a", "4", "@"],
+  B: ["B", "b", "8"],
+  C: ["C", "c", "©", "¢"],
+  D: ["D", "d", "6"],
+  E: ["E", "e", "3"],
+  F: ["F", "f", "7"],
+  G: ["G", "g", "9"],
+  H: ["H", "h"],
+  I: ["I", "i", "1", "l"],
+  J: ["J", "j", "7"],
+  K: ["K", "k"],
+  L: ["L", "l", "1"],
+  M: ["M", "m", "8"],
+  N: ["N", "n", "2"],
+  O: ["O", "o", "0", "*"],
+  P: ["P", "p", "9"],
+  Q: ["Q", "q"],
+  R: ["R", "r"],
+  S: ["S", "s", "5"],
+  T: ["T", "t"],
+  U: ["U", "u", "["],
+  V: ["V", "v"],
+  W: ["W", "w", "3"],
+  X: ["X", "x", "*"],
+  Y: ["Y", "y"],
+  Z: ["Z", "z"],
+};
 
-function to1337(str) {
-    let result = '';
-    for (const c of str) {
-        let upperChar = c.toUpperCase();
-        if (mapper[upperChar] && mapper[upperChar].length) {
-            result += randomItem(mapper[upperChar]);
-        } else {
-            result += randomItem([c, upperChar])
-        }
+function getAll1337(str) {
+  let results = [];
+  for (const c of str) {
+    let cu = c.toUpperCase();
+    if (mapper[cu]) {
+      results.push(mapper[cu]);
+    } else {
+      results.push([c]);
     }
-    // console.log(result);
-    return result;
-}
-function randomItem(items) {
-    return items[Math.floor(Math.random() * items.length)];
+  }
+  return product(results);
 }
 
-function testLetters() {
-    console.log('testing letters...')
-    for (let i = 0; i < normal.length; i++) {
-        const c1 = normal[i];
-        const c2 = leet[i];
+// all product is too long - split two two parts (keys1.txt, keys2.txt), then combine in python
+let allResults = getAll1337("hey_that");
+// let allResults = getAll1337("is_the_great_puzzle");
+console.log(allResults.length);
 
-        // ignore quotes
-        if (c1 == '"' || c1 == "'") {
-            continue;
-        }
-        // if is the same as c2:
-        if (c1 == c2 || c1.toUpperCase() == c2.toUpperCase()) {
-            continue;
-        }
+// write results to file (with stream, faster)
+var file = fs.createWriteStream("keys1.txt");
+file.on("error",console.error);
 
-        // if exists in mapper:
-        let c1Upper = c1.toUpperCase();
-        if (mapper[c1Upper]) {
-            // if contains the c2 char
-            if (mapper[c1Upper].includes(c2)) {
-                continue;
-            }
-        }
-        console.log('wrong mapping at index', i, c1, c2);
-    }
-}
-
-function testWords() {
-    // 750 words total
-    let w1 = leet.split(' ');
-    let w2 = normal.split(' ');
-
-    let nonMappedWords = [];
-    for (let i = 0; i < w1.length; i++) {
-        let leetWord = w1[i];
-        let normalWord = w2[i];
-
-        if (leetWord.toLowerCase() == normalWord.toLowerCase()) {
-            console.log(i, leetWord, normalWord);
-            nonMappedWords.push(leetWord);
-        }
-
-    }
-}
-
-function printCompletlyDifferentWords() {
-    // 750 words total
-    let w1 = leet.split(' ');
-    let w2 = normal.split(' ');
-
-    let result = [];
-    for (let i = 0; i < w1.length; i++) {
-        let leetWord = w1[i];
-        let normalWord = w2[i];
-
-        let flag = false
-        for (let j = 0; j < leetWord.length; j++) {
-            if (leetWord[j] == normalWord[j]) {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) {
-            let pair = [leetWord, normalWord];
-            console.log(pair)
-            result.push(pair);
-        }
-
-    }
-}
-
-function printByCase() {
-
-    let AZ = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    let az = AZ.map(x => x.toLowerCase());
-    let uppers = [];
-    let lowers = [];
-    for (const c of leet) {
-        if (AZ.includes(c)) {
-            uppers.push(c);
-        } else if (az.includes(c)) {
-            lowers.push(c);
-        }
-    }
-    console.log(uppers.join(''));
-    console.log(lowers.join(''));
-}
-
-// testLetters();
-// testWords();
-// printByCase();
-// printCompletlyDifferentWords();
-let allResults = new Set();
-for (let i = 0; i < 1000000; i++) {
-    allResults.add(to1337("{hey_that_is_the_great_puzzle}"));
-}
-// console.log(allResults)
-console.log(allResults.size)
-let results = Array.from(allResults);
-console.log(results.length)
-const fs = require('fs');
-fs.writeFileSync('keys.txt', results.join('\n'), "utf8");
+allResults.forEach((v) => file.write(v.join("") + "\n"));
+file.end();
