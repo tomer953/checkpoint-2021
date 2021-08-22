@@ -35,5 +35,4 @@ so `if flag_to_sell is not None:` is now not None, and we gain the selling coins
 now that we have money, we exploit the second bug we found:
 line 43:
 `result += "star (total {}) - {:0.2f}.\n".format(total_stars, user_value / total_stars)`
-if the `total_stars` is `0` and we still own some flags, we dividing by zero, causing to INF value
-this bug cause the calculation of our stars to be `INF` (>= 120) than we are concidered as VIP users and can buy the CSA flag.
+if the `total_stars` is `0` and we still own some flags, we dividing by zero, causing to exception, allowing us to buy the CSA FLAG (we do not check for vip)
