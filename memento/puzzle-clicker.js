@@ -1,4 +1,4 @@
-let boardStr = "W1sxMiwyLDEyLDEwLDE3LDQsMTksMTZdLFsxMywxOCw4LDE2LDcsNiw2LDVdLFsxNCwyMCwxMSwzLDksMTEsOSwxNV0sWzEsMTQsNCwxOSwyLDE3LDIwLDE1XSxbOCwxLDE4LDMsMTMsMTAsNyw1XV0=";
+let boardStr = "W1szLDYsMiwxMCw4LDMsMTgsNV0sWzE1LDEsMTMsMTYsMjAsMSwxNSwxMF0sWzE5LDcsNCwxNCw0LDE3LDgsMTFdLFs2LDEyLDE5LDE2LDksMTMsMTEsMTddLFs3LDE0LDksMjAsNSwyLDEyLDE4XV0=";
 let board = JSON.parse(atob(boardStr));
 
 
@@ -25,14 +25,14 @@ function getPairs(board) {
 
 function clickOnPairs() {
     let pairs = getPairs(board);
-    console.log(pairs);
     for (let i = 0; i< pairs.length; i++) {
         const pair = pairs[i];
         let a = pair[0];
         let b = pair[1];
-        setTimeout(() => { document.getElementById(`${a[0]}-${a[1]}`).click(); }, i * 600);
-        setTimeout(() => { document.getElementById(`${b[0]}-${b[1]}`).click(); }, i * 600 + 100);
+        setTimeout(() => { document.getElementById(`${a[0]}-${a[1]}`).click(); }, i * 100);
+        setTimeout(() => { document.getElementById(`${b[0]}-${b[1]}`).click(); }, i * 100 + 100);
     }
+    return pairs
 }
 
 clickOnPairs();
