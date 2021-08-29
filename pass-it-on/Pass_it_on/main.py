@@ -1,16 +1,16 @@
-from pwintools import pwintools
+from pwintools import Process
 import string
 import time
 
-r = pwintools.Process(r'Pass_it_on.exe')
+r = Process(r'Pass_it_on.exe')
 
 def main():
     flag = ''
     flag_len = 27
-    time = 0
     r.recvline()
     for i in range(flag_len):
-        for chr in (string.digits + string.ascii_letters + '_{}!'):
+        time = 0
+        for chr in (string.ascii_letters + string.digits + '_{}!'):
             input_flag = flag + chr + 'A' * (flag_len -1 - i)
             tmp_time = send_flag(input_flag)
             if tmp_time > time:
