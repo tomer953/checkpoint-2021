@@ -1,144 +1,104 @@
-import pprint
-import copy
+import math
+import requests
+import json
 import numpy as np
 
-PIECE = '*'
-HOLE = 'o'
-BLANK = ' '
+# def board_to_long(board):
+#     res = ''
+#     for i in range(7):
+#         for j in range(6,-1,-1):
+#             ch = board[j][i]
+#             res += '1' if (ch == 'O') else '0'
+#     # print(res)
+#     return int(res, 2)
 
 
-def create_board():
-    row = [PIECE for i in range(7)]
-    m = [row[:] for j in range(7)]
-    invalid = [(0, 0), (0, 1), (1, 0), (1, 1),
-               (5, 0), (5, 1), (6, 0), (6, 1),
-               (0, 5), (0, 6), (1, 5), (1, 6),
-               (5, 5), (5, 6), (6, 5), (6, 6)]
-    for x, y in invalid:
-        m[x][y] = BLANK
-    m[3][3] = HOLE
-    # board = np.array(m)
-    return m
+def board_to_int_arr(board, is_source):
+    arr = []
+    initial_points = []
+    for i in range(len(board[0])):
+        for j in range(len(board)):
+            ch = board[j][i]
+            if (ch == 'O'):
+                arr.append(1)
+            elif ch == '.':
+                # the java algorithm not contains 0 in the source, but save it as initial point instead
+                if is_source:
+                    arr.append(1)
+                    initial_points.append(j)
+                    initial_points.append(i)
+                else:
+                    arr.append(0)
+            else:
+                arr.append(2)
+    print(str(arr).replace('[','{').replace(']','}') + ";")
+    return initial_points
 
 
-# level_dest = [
-#     "  OOO  ",
-#     "  ..O  ",
-#     "OO.OO.O",
-#     "O.O..OO",
-#     "OOOO.OO",
-#     "  OOO  ",
-#     "  OOO  "
-# ]
-
-english_dest = [
-    [' ', ' ', HOLE, HOLE, HOLE, ' ', ' '],
-    [' ', ' ', HOLE, HOLE, HOLE, ' ', ' '],
-    [HOLE, HOLE, HOLE, HOLE, HOLE, HOLE, HOLE],
-    [HOLE, HOLE, HOLE, PIECE, HOLE, HOLE, HOLE],
-    [HOLE, HOLE, HOLE, HOLE, HOLE, HOLE, HOLE],
-    [' ', ' ', HOLE, HOLE, HOLE, ' ', ' '],
-    [' ', ' ', HOLE, HOLE, HOLE, ' ', ' ']
-]
-
-# english_dest = [
-#     "  ...  ",
-#     "  ...  ",
-#     ".......",
-#     "...O...",
-#     ".......",
-#     "  ...  ",
-#     "  ...  "
-# ]
+def get_initial_position(points):
+    print(str(points).replace('[','{').replace(']','}') + ";")
 
 
+def print_board(board):
+    for i in board:
+        for j in i:
+            print(j, end=" ")
+        print()
+
+def main():
+    
+    req = requests.get("https://puzzword.csa-challenge.com/puzzle")
+    req = req.json()
+    print(req)
+    while True:
+        if req['message']:
+            msg = req['message']
+            msg = json.loads(msg)
+            puzzle_id = msg["puzzle_id"]
+            source_board = msg["source_board"]
+            dest_board = msg["destination_board"]
+
+            print(msg)
+            print('source')
+            print_board(source_board)
+            print('dest')
+            print_board(dest_board)
+
+            print('\ninput for jave:')
+            init_points = board_to_int_arr(source_board, True)
+            board_to_int_arr(dest_board, False)
+            
+            # print board size
+            board_size = 'board size: ' + str(len(source_board)) + " , " + str(len(source_board[0]))
+            print(board_size)
+
+            # print initial point
+            get_initial_position(init_points)
+            
 
 
-def importJsonDest(level_dest):
-    result = []
-    for x in level_dest:
-        line = []
-        for c in x:
-            if c == ' ':
-                line.append(BLANK)
-            if c == 'O':
-                line.append(PIECE)
-            if c == '.':
-                line.append(HOLE)
-        result.append(line)
-    return result
+
+            valid_ans = False
+            while not valid_ans:
+                solution = input("insert moves:\n")
+                solution = json.loads(solution)
+                body = { "puzzle_id": puzzle_id, "solution": solution} 
+                req = requests.post('https://puzzword.csa-challenge.com/solve', json=body)
+                print(req.status_code)
+                if (str(req.status_code) == '200'):
+                    req = req.json()
+                    msg  = req['message']
+                    if ('wrong' not in msg):
+                        valid_ans = True
+                    print(msg)
+                        
+                
+    
+    pass
 
 
-def dest_board():
-    # dest_board = importJsonDest(english_dest)
-    return english_dest
+main()
 
 
-def valid_move(board, x, y, d):
-    if not board[x][y] == PIECE:
-        return False
-    if d == '<' and y > 1 and board[x][y-1] == PIECE and board[x][y-2] == HOLE or \
-       d == '>' and y < 5 and board[x][y+1] == PIECE and board[x][y+2] == HOLE or \
-       d == '^' and x > 1 and board[x-1][y] == PIECE and board[x-2][y] == HOLE or \
-       d == 'v' and x < 5 and board[x+1][y] == PIECE and board[x+2][y] == HOLE:
-        return True
-    return False
+# [[1, 3, ">"],[2, 1, "v"],[4, 2, "<"],[2, 3, "^"],[2, 0, "v"],[1, 2, ">"],[6, 2, "<"],[6, 4, "^"],[3, 2, ">"],[6, 2, "<"],[3, 0, "v"],[3, 2, ">"],[4, 0, "v"],[2, 5, "^"],[0, 4, ">"],[0, 2, "v"],[3, 4, "<"],[0, 4, ">"],[2, 3, "v"],[5, 4, "<"],[4, 6, "^"],[3, 4, ">"],[3, 6, "^"],[2, 6, "^"],[2, 4, ">"],[5, 2, "<"],[3, 2, "v"],[5, 3, "<"],[3, 3, "v"],[5, 4, "<"],[3, 5, "^"]]
 
-
-def move(m, x, y, d):
-    m[x][y] = HOLE
-    if d == '<':
-        m[x][y-1] = HOLE
-        m[x][y-2] = PIECE
-    if d == '>':
-        m[x][y+1] = HOLE
-        m[x][y+2] = PIECE
-    if d == '^':
-        m[x-1][y] = HOLE
-        m[x-2][y] = PIECE
-    if d == 'v':
-        m[x+1][y] = HOLE
-        m[x+2][y] = PIECE
-
-
-def valid_moves(m):
-    return [(x, y, d)
-            for x in range(7)
-            for y in range(7)
-            for d in ['<', '>', '^', 'v']
-            if valid_move(m, x, y, d)]
-
-
-def count_pieces(m):
-    return (m[3][3] == PIECE) and len([m[i][j] for i in range(7)
-                                       for j in range(7)
-                                       if m[i][j] == PIECE]) == 1
-
-
-def solved(m):
-    # return np.array_equal(m, dest_board())
-    return m == dest_board()
-    # return count_pieces(m) == 1
-
-
-def play(board, solution):
-    if solved(board):
-        return True
-
-    to_test = valid_moves(board)
-    for t in to_test:
-        m_copy = copy.deepcopy(board)
-        move(m_copy, *t)
-        if play(m_copy, solution):
-            solution.append(t)
-            return True
-    return False
-
-
-if __name__ == '__main__':
-    board = create_board()
-    solution = []
-    play(board, solution)
-    solution.reverse()
-    pprint.pprint(solution)
-    print('done')

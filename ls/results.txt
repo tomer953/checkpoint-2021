@@ -1,0 +1,10 @@
+ls
+"body": "[\"flag.txt\\nlambda_function.py\\n\"]"
+flag.txt lambda_function.py
+
+ls ../
+    "body": "[\"adm\\ncache\\ndb\\nempty\\ngames\\ngopher\\nkerberos\\nlang\\nlib\\nlocal\\nlock\\nlog\\nmail\\nnis\\nopt\\npreserve\\nrapid\\nrun\\nruntime\\nspool\\ntask\\ntelemetry\\ntmp\\ntracer\\nyp\\n\"]"
+adm cache db empty games gopher kerberos lang lib local lock log mail nis opt preserve rapid run runtime spool task telemetry tmp tracer yp
+
+ls && cat flag.txt
+"[\"ls: cannot access &&: No such file or directory\\nls: cannot access cat: No such file or directory\\nflag.txt\\n\"]"
