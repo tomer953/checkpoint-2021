@@ -26,7 +26,7 @@ def parse_number_to_flag(number,res_str,flag):
 def main():
     predictor = MT19937Predictor()
     flag = "•" * 32
-    cookies = {'sessionid': '60hin9x0m01a5s1docdn0csyj6qy07nf'}
+    cookies = {'sessionid': 'f1h4joy71hcn6u0fgvdd9vuunzq4dezf'}
 
     missing_chars = len(flag)
     i=0

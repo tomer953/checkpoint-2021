@@ -25,11 +25,10 @@ let counterPerNumber = {
 };
 // it's hint us that 5 should be in the center, 2,4,6,8 in corners, and 1,3,7,9 in the middle
 
-// if we spread the numbers 1-9 in the following way
+// we create a MAGIC SQUARE
 // all we need is to play tic-tac-toe agains the computer (pretty easy) to force a tie
 let board = [
   [6, 1, 8],
   [7, 5, 3],
   [2, 9, 4],
 ];
-// csa{https://www.youtube.com/watch?v=NHWjlCaIrQo}
