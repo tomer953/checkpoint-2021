@@ -1,6 +1,8 @@
 
 import itertools
 from Crypto.Cipher import ARC4
+import time
+import random
 
 mapper = {
   "A": ["A", "a", "4", "@"],
@@ -37,6 +39,10 @@ def get_all_options(str):
     for c in str:
         ch = c.upper()
         x.append(mapper[ch] if ch in mapper else [c])
+    
+    # this should decrease search time
+    for a in x:
+        random.shuffle(a)
     return itertools.product(*x)
 
 
@@ -54,18 +60,23 @@ def main():
     # check every option of that pharse from the readme
     # using the 1337 codes map in the file 
     print('searching flag...')
+    start = time.time()
 
     i = 0
     for key in get_all_options("hey_that_is_the_great_puzzle"): 
         key = "".join(key)
-        print(key)
+        # print(key)
         if check_key(key, key_checker_data):
             print("Found flag: CSA{" + key + "}")
             break
         # print progress...
         i += 1
-        if (i % 1000 == 0):
-            print(i)
+        if (i % 1000000 == 0):
+            print(i / 1000000)
+
+    end = time.time()
+    print('finish time')
+    print((end - start) / 1000)
 
 
 main()

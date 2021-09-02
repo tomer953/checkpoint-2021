@@ -43,7 +43,6 @@ function getMatchesFromBook(pattern, options) {
     for (const o of options) {
       if (morseStr.startsWith(o)) {
         console.log("found candidate", word);
-        fs.appendFileSync('candidates.txt', word + '\n');
         // since its only partial, if we find a match - keep trying to get a full match
         if (testCandidate(FULL_PATTERN, morseStr)) {
           return getFullMatch(i)

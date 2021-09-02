@@ -176,7 +176,7 @@ function createBoard(dist) {
 }
 
 function main() {
-  let boardStr = createBoard(1);
+  let boardStr = createBoard(7);
   let board = JSON.parse(Buffer.from(boardStr, "base64"));
   //   console.log(board);
 
@@ -205,7 +205,7 @@ file.on("error", console.error);
 res.forEach((v) => file.write(v.join("") + "\n"));
 file.end();
 
-// main();
+main();
 
 // level 0 - shortest 5 [g,p,y]
 // level 1 - shortest 3 [e,n,w]

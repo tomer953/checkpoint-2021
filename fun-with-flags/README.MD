@@ -16,7 +16,7 @@ He also decided to log every transaction, in case anyone tries to buy the specia
 ```nc fun-with-flags.csa-challenge.com 6666```
 
 
-## solution
+**Solution:**
 We need to review the code and we found two bugs:
 
 1. 
@@ -36,3 +36,8 @@ now that we have money, we exploit the second bug we found:
 line 43:
 `result += "star (total {}) - {:0.2f}.\n".format(total_stars, user_value / total_stars)`
 if the `total_stars` is `0` and we still own some flags, we dividing by zero, causing to exception, allowing us to buy the CSA FLAG (we do not check for vip)
+
+
+**FLAG**
+
+`CSA{M4y_Th3Re_ALwaY5_8E_A_ST4R_0n_y0UR_fL4G}`
