@@ -17,7 +17,7 @@ and ends with: `STOP`
 
 so we can use this information to reverse the initial key
 
-![](../images/cq_cq_cq-known-text.png)
+![](../../images/cq_cq_cq-known-text.png)
 
 we can see that `S` decryped to `R` both in the first 5 letters, and the next 5 letters as well.
 

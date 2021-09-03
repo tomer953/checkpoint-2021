@@ -3,7 +3,7 @@
 
 `WFKZLTABVKWVLXGMASVPYVP2ZRTKVHKV6XGBJKVEKX44YCVKXBK4XTBDVKSVL2WMACVLOVPEZQJ2VHCV`
 
-![](../images/DecodeMe.png?raw=true)
+![](../../images/DecodeMe.png?raw=true)
 
 **Solution**:
 
@@ -16,7 +16,7 @@
 
 https://cryptii.com/
 
-[screenshot](../images/DecodeMe-sol.png?raw=true)
+[screenshot](../../images/DecodeMe-sol.png?raw=true)
 
 **Flag**:
 
