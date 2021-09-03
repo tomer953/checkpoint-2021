@@ -7,7 +7,7 @@ What could go wrong?
 `nc strange-game.csa-challenge.com 4444`
 
 
-- [screenshot](../images/strange-game.png?raw=true)
+- [screenshot](../../images/strange-game.png?raw=true)
 
 
 **Solution:**

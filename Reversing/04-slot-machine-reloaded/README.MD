@@ -7,7 +7,7 @@ Well, this one is a little harder...
 http://slot-machine-reloaded.csa-challenge.com/
 
 
-- [screenshot](../images/slot-machine-website.png?raw=true)
+- [screenshot](../../images/slot-machine-website.png?raw=true)
 
 
 **Solution:**

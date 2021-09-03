@@ -8,7 +8,7 @@ My grandpa lost his password and cannot seem to recall it!
 He is very secretive and will not elaborate, but I have heard him complain several times about how long it takes the program to verify his password.
 Weird right?
 
-- [screenshot](../images/pass-it-on.png?raw=true)
+- [screenshot](../../images/pass-it-on.png?raw=true)
 
 **Solution**:
 
@@ -21,7 +21,7 @@ the description is a very solid hint for **timing attack**
 
 for example the first 4 iteration will give you:
 
-- [screenshot](../images/pass-it-on-sol.png?raw=true)
+- [screenshot](../../images/pass-it-on-sol.png?raw=true)
 
 ```
 CAAAAAAAAAAAAAAAAAAAAAAAAAA

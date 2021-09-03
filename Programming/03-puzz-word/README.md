@@ -11,7 +11,7 @@ You can try it here:
 https://puzzword.csa-challenge.com/help
 
 
-- [screenshot](../images/puzz-word-help.png?raw=true)
+- [screenshot](../../images/puzz-word-help.png?raw=true)
 
 **Input example:**
 
