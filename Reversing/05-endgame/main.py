@@ -28,16 +28,6 @@ AB AB CD FF CD AF 1C 35 AB BC
 """
 
 
-def print_memory(memory):
-    print('-' * 60)
-    sum = 0
-    for k in memory:
-        print(k + ":" + str(int(memory[k])))
-        sum += int(memory[k])
-    print('-' * 60)
-    # print_sum(sum)
-
-
 def print_flag(a):
     hex_string = hex(int(a))[2:]
     ascii = bytes.fromhex(hex_string)
@@ -46,15 +36,14 @@ def print_flag(a):
     pass
 
 def apply_op(memory, op, x, y):
-    if op == 'ADD':
+    if op == '+':
         memory[x] += int(memory[y])
-    elif op == 'SUB':
+    elif op == '-':
         memory[x] -= int(memory[y])
-    elif op == 'MUL':
+    elif op == '*':
         memory[x] *= int(memory[y])
-    elif op == 'DIV':
+    elif op == '/':
         memory[x] = int(memory[x]) / int(memory[y])
-    pass
 
 def main():
     code = FLAG.split()
@@ -67,10 +56,10 @@ def main():
         "1F": 0,
     }
     operands = {
-        "AB": "ADD",
-        "BA": "SUB",
-        "CD": "MUL",
-        "DC": "DIV"
+        "AB": "+",
+        "BA": "-",
+        "CD": "*",
+        "DC": "/"
     }
     for i in range(0,len(code),2):
         cmd = code[i:i+2]
@@ -79,7 +68,7 @@ def main():
         # save to memory
         if cmd[0] in memory:
             memory[cmd[0]] = int(cmd[1],16)
-            print(str(cmd) + '-> memory')
+            print(str(cmd) + '-> ' + cmd[0] + ' = ' + cmd[1])
 
         # apply operand
         elif cmd[0] in operands:
@@ -90,12 +79,11 @@ def main():
             apply_op(memory, op, x, y)
             
         elif cmd[0] == '00':
-            print_memory(memory)
-            print('finish')
+            print('finish.. printing memory:')
+            print(memory)
+            print('flag:')
             print_flag(memory["1A"])
             
-        else:
-            print("unknown cmd: " + str(cmd))
     pass
 
 
