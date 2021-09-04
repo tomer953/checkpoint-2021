@@ -1,13 +1,18 @@
-from pwintools import Process
+
 import string
 import time
+import subprocess
 
-r = Process(r'Pass_it_on.exe')
+p = subprocess.Popen(['Pass_it_on.exe'],
+                 stdin=subprocess.PIPE,
+                 stdout=subprocess.PIPE,
+                 )
+                 
 
 def main():
     flag = ''
     flag_len = 27
-    r.recvline()
+    p.stdout.readline()
     for i in range(flag_len):
         time = 0
         for chr in (string.ascii_letters + string.digits + '_{}!'):
@@ -24,9 +29,10 @@ def main():
 
 def send_flag(flag):
     start = time.time()
-    r.sendline(flag)
-    r.recvline(timeout=5000)
-    r.recvline(timeout=5000)
+    p.stdin.write(str.encode(flag + '\n'))
+    p.stdin.flush()
+    p.stdout.readline()
+    p.stdout.readline()
     end = time.time()
     return (end - start)
 
