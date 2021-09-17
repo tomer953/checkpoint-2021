@@ -15,10 +15,10 @@ console.log('base32', s1HexStr);
 let paddedXorKey = xorKey.padEnd(s1HexStr.length, xorKey); // CC55AACC55AACC55AA....
 let xorBuffer = xor(new Buffer.from(s1HexStr, 'hex'), new Buffer.from(paddedXorKey, 'hex'));
 let result = xorBuffer.toString();
-console.log('xor', result);
+console.log('xor', result); // }?TavQ0P3Q_AhS_tavi@U{NFP
 
 // ceaser
-result = cipherRot13("}?TavQ0P3Q_AhS_tavi@U{NFP");
+result = cipherRot13(result);
 console.log('ceaser 13', result);
 
 // reverse string
